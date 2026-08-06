@@ -103,7 +103,7 @@ export default function App() {
 
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-            <img src="/assets/images/creative_concept_image1.png" alt="WSP" className="h-4 object-contain" />
+            <img src="./assets/images/creative_concept_image1.png" alt="WSP" className="h-4 object-contain" />
             <span className="font-editorial text-xs font-black tracking-[0.25em] text-white/80 hidden sm:inline uppercase">
               ENGINEERING TOMORROW
             </span>
@@ -138,7 +138,7 @@ export default function App() {
         
         {/* WSP logo intro */}
         <img
-          src="/assets/images/creative_concept_image1.png"
+          src="./assets/images/creative_concept_image1.png"
           alt="WSP Logo"
           className="h-10 md:h-12 object-contain mb-12 animate-pulse opacity-90 z-10"
         />
@@ -306,7 +306,7 @@ export default function App() {
                 {/* Download button for Creative Concept */}
                 <div className="mt-4">
                   <a
-                    href="/PDF/WSP Creative Concept.pdf"
+                    href="./PDF/WSP Creative Concept.pdf"
                     download="WSP Creative Concept.pdf"
                     className="red-outline-btn"
                   >
@@ -353,7 +353,7 @@ export default function App() {
                 </div>
 
                 <a
-                  href="/WSP Engineering Tomorrow Hussein Masri.mp4"
+                  href="./WSP Engineering Tomorrow Hussein Masri.mp4"
                   download="WSP Engineering Tomorrow Hussein Masri.mp4"
                   className="red-outline-btn"
                 >
@@ -388,7 +388,7 @@ export default function App() {
 
               <div className="mt-8">
                 <a
-                  href="/PDF/WSP Storyboard Redesigned.pdf"
+                  href="./PDF/WSP Storyboard Redesigned.pdf"
                   download="WSP Storyboard Redesigned.pdf"
                   className="red-outline-btn"
                 >
@@ -423,7 +423,7 @@ export default function App() {
 
               <div className="mt-8">
                 <a
-                  href="/PDF/WSP AI Generated Images.pdf"
+                  href="./PDF/WSP AI Generated Images.pdf"
                   download="WSP AI Generated Images.pdf"
                   className="red-outline-btn"
                 >
@@ -458,7 +458,7 @@ export default function App() {
 
               <div className="mt-8">
                 <a
-                  href="/PDF/WSP AI Workflow Documentation.pdf"
+                  href="./PDF/WSP AI Workflow Documentation.pdf"
                   download="WSP AI Workflow Documentation.pdf"
                   className="red-outline-btn"
                 >
@@ -493,7 +493,7 @@ export default function App() {
 
               <div className="mt-8">
                 <a
-                  href="/PDF/WSP AI Creative Lab.pdf"
+                  href="./PDF/WSP AI Creative Lab.pdf"
                   download="WSP AI Creative Lab.pdf"
                   className="red-outline-btn"
                 >
@@ -544,7 +544,7 @@ export default function App() {
                   </p>
                 </div>
                 <a
-                  href="/WSP Engineering Tomorrow Hussein Masri.mp4"
+                  href="./WSP Engineering Tomorrow Hussein Masri.mp4"
                   download="WSP Engineering Tomorrow Hussein Masri.mp4"
                   className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4"
                 >
@@ -572,7 +572,7 @@ export default function App() {
                   </p>
                 </div>
                 <a
-                  href="/PDF/WSP Creative Concept.pdf"
+                  href="./PDF/WSP Creative Concept.pdf"
                   download="WSP Creative Concept.pdf"
                   className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4"
                 >
@@ -600,7 +600,7 @@ export default function App() {
                   </p>
                 </div>
                 <a
-                  href="/PDF/WSP Storyboard Redesigned.pdf"
+                  href="./PDF/WSP Storyboard Redesigned.pdf"
                   download="WSP Storyboard Redesigned.pdf"
                   className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4"
                 >
@@ -628,7 +628,7 @@ export default function App() {
                   </p>
                 </div>
                 <a
-                  href="/PDF/WSP AI Generated Images.pdf"
+                  href="./PDF/WSP AI Generated Images.pdf"
                   download="WSP AI Generated Images.pdf"
                   className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4"
                 >
@@ -656,7 +656,7 @@ export default function App() {
                   </p>
                 </div>
                 <a
-                  href="/PDF/WSP AI Workflow Documentation.pdf"
+                  href="./PDF/WSP AI Workflow Documentation.pdf"
                   download="WSP AI Workflow Documentation.pdf"
                   className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4"
                 >
@@ -684,7 +684,7 @@ export default function App() {
                   </p>
                 </div>
                 <a
-                  href="/PDF/WSP AI Creative Lab.pdf"
+                  href="./PDF/WSP AI Creative Lab.pdf"
                   download="WSP AI Creative Lab.pdf"
                   className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4"
                 >

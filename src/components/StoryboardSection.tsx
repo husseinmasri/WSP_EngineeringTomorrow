@@ -20,7 +20,7 @@ const storyboardData: Scene[] = [
     voiceover: '"At WSP, engineering begins with understanding."',
     visual: "A senior engineering leader overlooks the city at sunrise, reflecting before the day begins.",
     why: "Opens on insight before action engineering starts with understanding people, place, and what's ahead.",
-    image: "/assets/images/storyboard_image2.png",
+    image: "./assets/images/storyboard_image2.png",
     sourceType: "AI Generated",
   },
   {
@@ -30,7 +30,7 @@ const storyboardData: Scene[] = [
     voiceover: '"As cities grow and the world continues to change."',
     visual: "A cinematic aerial view reveals a modern city's integrated transit, public space, and evolving infrastructure.",
     why: "Establishes the scale of growth and complexity that engineering must respond to.",
-    image: "/assets/images/storyboard_image3.png",
+    image: "./assets/images/storyboard_image3.png",
     sourceType: "AI Generated",
   },
   {
@@ -40,7 +40,7 @@ const storyboardData: Scene[] = [
     voiceover: '"The decisions we make today will shape how people live tomorrow."',
     visual: "An engineer studies a bridge scale model, evaluating the design before construction begins.",
     why: "Early design decisions carry long-term consequences; thoughtful planning shapes tomorrow.",
-    image: "/assets/images/storyboard_image4.png",
+    image: "./assets/images/storyboard_image4.png",
     sourceType: "AI Generated",
   },
   {
@@ -50,7 +50,7 @@ const storyboardData: Scene[] = [
     voiceover: '"At WSP, engineering begins with understanding."',
     visual: "An engineer interacts with a Digital Twin, analyzing a virtual city before construction begins.",
     why: "Understanding is built through analysis and visualization exploring scenarios before committing to reality.",
-    image: "/assets/images/storyboard_image5.png",
+    image: "./assets/images/storyboard_image5.png",
     sourceType: "AI Generated",
   },
   {
@@ -60,7 +60,7 @@ const storyboardData: Scene[] = [
     voiceover: '"Bringing together advisory expertise, science, data and technology to see challenges differently."',
     visual: "A multidisciplinary team collaborates around a bridge model, reviewing a digital design on-screen.",
     why: "Shows disciplines converging: technical, scientific, and digital expertise evaluated together.",
-    image: "/assets/images/storyboard_image6.png",
+    image: "./assets/images/storyboard_image6.png",
     sourceType: "AI Generated",
   },
   {
@@ -70,7 +70,7 @@ const storyboardData: Scene[] = [
     voiceover: '"To design resilient infrastructure."',
     visual: "An engineering team reviews a large-scale urban model against a live digital infrastructure simulation.",
     why: "Resilience is designed, not assumed, through collaboration and digital simulation before construction.",
-    image: "/assets/images/storyboard_image7.png",
+    image: "./assets/images/storyboard_image7.png",
     sourceType: "AI Generated",
   },
   {
@@ -80,7 +80,7 @@ const storyboardData: Scene[] = [
     voiceover: '"Protect natural resources."',
     visual: "A modern energy facility is monitored through intelligent digital overlays tracking environmental performance.",
     why: "Technology in service of stewardship efficiency and environmental monitoring together.",
-    image: "/assets/images/storyboard_image8.png",
+    image: "./assets/images/storyboard_image8.png",
     sourceType: "AI Enhanced",
   },
   {
@@ -90,7 +90,7 @@ const storyboardData: Scene[] = [
     voiceover: '"Create more sustainable places."',
     visual: "An architect develops a sustainable urban design, weaving green space and nature into the built form.",
     why: "Sustainable places begin at the drawing board: architecture and nature planned as one.",
-    image: "/assets/images/storyboard_image9.png",
+    image: "./assets/images/storyboard_image9.png",
     sourceType: "AI Generated",
   },
   {
@@ -100,7 +100,7 @@ const storyboardData: Scene[] = [
     voiceover: '"And connect communities through smarter mobility, energy and the built environment."',
     visual: "An aerial highway interchange is overlaid with intelligent digital connections, visualizing a smart network.",
     why: "Makes the invisible visible: the connected intelligence behind safer, smarter transportation.",
-    image: "/assets/images/storyboard_image10.png",
+    image: "./assets/images/storyboard_image10.png",
     sourceType: "AI Enhanced",
   },
   {
@@ -110,7 +110,7 @@ const storyboardData: Scene[] = [
     voiceover: '"Energy and the built environment."',
     visual: "A wind turbine operates with subtle AI-powered energy-flow visualization woven into the frame.",
     why: "Renewable energy shown as integrated infrastructure, not a standalone icon.",
-    image: "/assets/images/storyboard_image11.png",
+    image: "./assets/images/storyboard_image11.png",
     sourceType: "AI Generated",
   },
   {
@@ -120,7 +120,7 @@ const storyboardData: Scene[] = [
     voiceover: '"Because progress is not measured only by what we build, but by the positive impact it creates for people and the planet."',
     visual: "A child walks safely through a vibrant, people-centered community of green space and everyday life.",
     why: "Shifts focus from structures to people the true measure of engineering's success.",
-    image: "/assets/images/storyboard_image12.png",
+    image: "./assets/images/storyboard_image12.png",
     sourceType: "AI Generated",
   },
   {
@@ -130,7 +130,7 @@ const storyboardData: Scene[] = [
     voiceover: '"Turning possibility into lasting progress."',
     visual: "A connected smart city comes to life through subtle digital infrastructure networks at dusk.",
     why: "The closing image: innovation, collaboration, and infrastructure resolved into one skyline.",
-    image: "/assets/images/storyboard_image13.png",
+    image: "./assets/images/storyboard_image13.png",
     sourceType: "AI Generated",
   },
 ];

@@ -143,8 +143,8 @@ export const CustomVideoPlayer: React.FC = () => {
     >
       <video
         ref={videoRef}
-        src="/WSP Engineering Tomorrow Hussein Masri.mp4"
-        poster="/assets/images/video_poster.png"
+        src="./WSP Engineering Tomorrow Hussein Masri.mp4"
+        poster="./assets/images/video_poster.png"
         className="w-full h-full object-cover"
         muted={isMuted}
         playsInline
