@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Play, Pause, Volume2, VolumeX, RotateCcw, ChevronRight, FileText, Cpu, ShieldCheck, Settings, Layers, Box, ArrowDown, Film } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, RotateCcw, ChevronRight, FileText, Cpu, ShieldCheck, Settings, Layers, ArrowDown, Film, ArrowLeft, Layout, Sun, Moon } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 
 interface Act {
@@ -11,7 +11,8 @@ interface Act {
   transition: string;
   type: "image" | "video";
   src: string;
-  poster?: string;
+  planSrc?: string;
+  subImages?: { label: string; src: string; desc: string }[];
 }
 
 const actsData: Act[] = [
@@ -24,6 +25,12 @@ const actsData: Act[] = [
     transition: "Match-cut on shared geometry — the initial site outline resolves directly into the physical concrete foundations and core building structure.",
     type: "image",
     src: "./assets/images_final/wsp_site_model.png",
+    planSrc: "./assets/images_final/wsp_site_plan.jpg",
+    subImages: [
+      { label: "Site Model View", src: "./assets/images_final/wsp_site_model.png", desc: "Labeled 3D isometric representation of the site topography and initial building footprint outlines." },
+      { label: "Master Site Plan", src: "./assets/images_final/wsp_site_plan.jpg", desc: "Detailed structural site plan outlining structural divisions, access routes, and buffer zones." },
+      { label: "Structural Framing", src: "./assets/images_final/slide_3_image_7_Picture_58.jpg", desc: "Initial steel and concrete framing view demonstrating core structural execution." }
+    ]
   },
   {
     id: "act-2",
@@ -34,6 +41,11 @@ const actsData: Act[] = [
     transition: "The concrete shell footprint established in Act I becomes the base layout for the mechanical, electrical, and data tray fits in Act II.",
     type: "video",
     src: "./Structure to System.mp4",
+    subImages: [
+      { label: "System Plan", src: "./assets/images_final/slide_3_image_5_Picture_54.png", desc: "Data hall technical routing layout showing partition zones and distribution corridors." },
+      { label: "M&E Tray Tracing", src: "./assets/images_final/slide_4_image_3_Picture_5.png", desc: "Cable containment systems, overhead busways, and cold aisle containment structures." },
+      { label: "Internal Server Pods", src: "./assets/images_final/slide_4_image_2_Picture_11.jpg", desc: "Internal perspective of server cabinet spaces prior to system commissioning." }
+    ]
   },
   {
     id: "act-3",
@@ -44,6 +56,11 @@ const actsData: Act[] = [
     transition: "The technical tray systems and servers from Act III integrate seamlessly into the finished architectural render, lighting up to indicate operational status.",
     type: "video",
     src: "./System to Service.mp4",
+    subImages: [
+      { label: "External Render", src: "./assets/images_final/slide_5_image_1_Picture_12.png", desc: "Fully completed data centre external envelope with landscaping and security boundaries." },
+      { label: "Operational Hall", src: "./assets/images_final/slide_5_image_2_Picture_8.png", desc: "Active data hall featuring running rack assemblies, status lights, and active cooling feeds." },
+      { label: "Technical Sign-Off", src: "./assets/images_final/slide_5_image_3_Image_3.jpg", desc: "Executive presentation render demonstrating ready-for-service compliance." }
+    ]
   },
 ];
 
@@ -80,19 +97,24 @@ const milestones = [
 
 export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [activeActIdx, setActiveActIdx] = useState(0);
+  const [activeSubImgIdx, setActiveSubImgIdx] = useState(0);
+  const [showVideo, setShowVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [progress, setProgress] = useState(0);
   const [activeTimelineIdx, setActiveTimelineIdx] = useState(0);
   const [showDataOverlay, setShowDataOverlay] = useState(false);
+  const [powerOnEffect, setPowerOnEffect] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const currentAct = actsData[activeActIdx];
 
-  // Reset video state when switching acts
+  // Reset states when switching acts
   useEffect(() => {
     setIsPlaying(false);
     setProgress(0);
+    setActiveSubImgIdx(0);
+    setShowVideo(false);
     if (videoRef.current) {
       videoRef.current.load();
       if (!isMuted) {
@@ -153,7 +175,7 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
   return (
     <div className="relative min-h-screen text-white bg-black font-sans selection:bg-wsp-red/30">
       
-      {/* Background CAD Grids */}
+      {/* Background Grids */}
       <div className="absolute inset-0 bg-[#060607] bg-[radial-gradient(rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none z-0" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(227,27,35,0.005)_1px,transparent_1px),linear-gradient(90deg,rgba(227,27,35,0.005)_1px,transparent_1px)] bg-[size:96px_96px] pointer-events-none z-0" />
 
@@ -163,13 +185,13 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
           onClick={onBack}
           className="flex items-center gap-2 px-4 py-2 bg-black/60 border border-white/10 hover:border-wsp-red text-white/80 hover:text-white rounded-lg backdrop-blur-md transition-all shadow-lg hover:shadow-wsp-red/10 cursor-pointer text-xs uppercase tracking-widest font-mono"
         >
-          <RotateCcw size={12} />
-          Back to Portfolio Hub
+          <ArrowLeft size={12} />
+          Back to Hub
         </button>
       </div>
 
       {/* 1. Case Study Hero Header */}
-      <section className="relative min-h-[75vh] flex flex-col justify-center items-center text-center px-6 pt-24 pb-16 z-10 border-b border-white/5 bg-[#030304]/80">
+      <section className="relative min-h-[70vh] flex flex-col justify-center items-center text-center px-6 pt-24 pb-16 z-10 border-b border-white/5 bg-[#030304]/80">
         <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#060607] to-transparent pointer-events-none" />
         
         {/* Technical crosshairs decorations */}
@@ -204,7 +226,6 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
           </div>
         </div>
 
-        {/* Floating Scroll Indicator */}
         <div className="absolute bottom-8 animate-bounce text-white/20 hover:text-wsp-red transition-colors cursor-pointer" onClick={() => document.getElementById("theatre")?.scrollIntoView({ behavior: "smooth" })}>
           <ArrowDown size={18} />
         </div>
@@ -214,7 +235,7 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
       <main className="max-w-7xl mx-auto px-6 pb-32 flex flex-col gap-32 relative z-10">
 
         {/* ==================================================== */}
-        {/* SECTION 01 — VISUAL NARRATIVE THEATRE */}
+        {/* SECTION 01 — VISUAL NARRATIVE & SLIDESHOW */}
         {/* ==================================================== */}
         <section id="theatre" className="scroll-mt-24">
           <SectionHeader
@@ -228,7 +249,7 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
             {/* Left: Act Selector & Description (5 Columns) */}
             <div className="lg:col-span-5 flex flex-col justify-between p-6 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-xl">
               <div className="flex flex-col gap-6">
-                <span className="font-mono text-[9px] text-wsp-red tracking-widest uppercase font-bold">// SEQUENCE NAVIGATION</span>
+                <span className="font-mono text-[9px] text-wsp-red tracking-widest uppercase font-bold">// SEQUENCE STRUCTURE</span>
                 
                 {/* Act Tabs */}
                 <div className="flex flex-col gap-3">
@@ -244,7 +265,7 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
                     >
                       <div className="flex justify-between items-center">
                         <span className="font-mono text-[10px] tracking-wider font-black">{act.actNum}</span>
-                        <span className="font-mono text-[9px] opacity-60 font-semibold">{act.phase.split(" ")[0] + " " + act.phase.split(" ")[1]}</span>
+                        <span className="font-mono text-[9px] opacity-60 font-semibold">{act.phase.split(" ")[0]}</span>
                       </div>
                       <h4 className="font-editorial text-sm font-bold uppercase tracking-wider mt-1">{act.title}</h4>
                     </button>
@@ -274,133 +295,195 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
                 </div>
               </div>
 
-              {/* Status bar */}
-              <div className="flex items-center justify-between border-t border-white/5 pt-6 mt-6 font-mono text-[9px] text-white/40 uppercase">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-wsp-red animate-pulse" />
-                  <span>Interactive Stream</span>
+              {/* Bottom control to swap between PowerPoint Assets and Live Video Add-on */}
+              {currentAct.type === "video" && (
+                <div className="mt-6 border-t border-white/5 pt-6 flex flex-col gap-3">
+                  <span className="font-mono text-[9px] text-white/30 uppercase tracking-widest font-bold">Presentation View Mode</span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setShowVideo(false)}
+                      className={`flex-1 py-2 text-center rounded border font-mono text-[9px] tracking-wider transition-all cursor-pointer ${
+                        !showVideo ? "bg-white/5 border-white/20 text-white" : "border-white/5 text-white/40 hover:text-white/70"
+                      }`}
+                    >
+                      <Layout size={10} className="inline mr-1" />
+                      PDF Renders
+                    </button>
+                    <button
+                      onClick={() => setShowVideo(true)}
+                      className={`flex-1 py-2 text-center rounded border font-mono text-[9px] tracking-wider transition-all cursor-pointer ${
+                        showVideo ? "bg-wsp-red/10 border-wsp-red/35 text-wsp-red" : "border-white/5 text-white/40 hover:text-white/70"
+                      }`}
+                    >
+                      <Film size={10} className="inline mr-1" />
+                      Live Motion Process
+                    </button>
+                  </div>
                 </div>
-                <span>Asset: {currentAct.type === "image" ? "Render Frame" : "60s Footage Sample"}</span>
-              </div>
+              )}
             </div>
 
-            {/* Right: Media Playback Window (7 Columns) */}
+            {/* Right: Asset viewer / Video Player (7 Columns) */}
             <div className="lg:col-span-7 flex flex-col justify-center">
-              <div 
-                className="w-full aspect-video relative rounded-xl overflow-hidden border border-white/10 bg-black flex items-center justify-center group"
-                style={{
-                  boxShadow: isPlaying ? "0 0 30px rgba(227,27,35,0.08)" : "none",
-                  transition: "box-shadow 0.5s ease"
-                }}
-              >
-                {/* 1. Act I (Image) */}
-                {currentAct.type === "image" ? (
-                  <div className="absolute inset-0 select-none">
-                    <img
-                      src={currentAct.src}
-                      alt={currentAct.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/10" />
-                    
-                    {/* Corner Brackets */}
-                    <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-wsp-red" />
-                    <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-wsp-red" />
-                    <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-wsp-red" />
-                    <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-wsp-red" />
-                  </div>
-                ) : (
-                  // 2. Act II & III (Videos)
-                  <div className="absolute inset-0 w-full h-full">
-                    <video
-                      ref={videoRef}
-                      src={currentAct.src}
-                      className="w-full h-full object-cover"
-                      muted={isMuted}
-                      playsInline
-                      onTimeUpdate={handleTimeUpdate}
-                      onEnded={handleEnded}
-                      onClick={handlePlayPause}
-                    />
+              
+              {/* If Video mode is active */}
+              {showVideo && currentAct.type === "video" ? (
+                <div className="w-full aspect-video relative rounded-xl overflow-hidden border border-wsp-red/20 bg-black group shadow-[0_0_30px_rgba(227,27,35,0.08)] transition-all">
+                  <video
+                    ref={videoRef}
+                    src={currentAct.src}
+                    className="w-full h-full object-cover"
+                    muted={isMuted}
+                    playsInline
+                    onTimeUpdate={handleTimeUpdate}
+                    onEnded={handleEnded}
+                    onClick={handlePlayPause}
+                  />
 
-                    {/* Laser Scanner Grid overlay (Toggled) */}
-                    <div className={`absolute inset-0 pointer-events-none transition-opacity duration-500 z-10 ${showDataOverlay ? "opacity-100" : "opacity-0"}`}>
-                      <div className="absolute inset-0 bg-[linear-gradient(rgba(227,27,35,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(227,27,35,0.06)_1px,transparent_1px)] bg-[size:40px_40px]" />
-                      <div className="absolute inset-x-0 h-[1.5px] bg-wsp-red/70 shadow-[0_0_8px_rgba(227,27,35,0.8)] top-0 animate-[scan_3s_linear_infinite]" />
-                      <div className="absolute bottom-16 left-4 bg-black/85 px-2.5 py-1.5 border border-wsp-red/30 rounded font-mono text-[8px] text-wsp-red tracking-widest flex flex-col gap-0.5">
-                        <span>DATA_FLOW: ONSTREAM</span>
-                        <span>FACILITY_ID: DC_PHASE_II_CORE</span>
-                        <span>VOLTAGE: 110KV SUBSTATION</span>
-                      </div>
-                      <div className="absolute top-4 right-4 bg-black/85 px-2 py-1 border border-wsp-red/30 rounded font-mono text-[8px] text-wsp-red">
-                        CAM_TRACK: LOCK [1.77]
-                      </div>
+                  {/* Laser Scanner Grid overlay */}
+                  <div className={`absolute inset-0 pointer-events-none transition-opacity duration-500 z-10 ${showDataOverlay ? "opacity-100" : "opacity-0"}`}>
+                    <div className="absolute inset-0 bg-[linear-gradient(rgba(227,27,35,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(227,27,35,0.06)_1px,transparent_1px)] bg-[size:40px_40px]" />
+                    <div className="absolute inset-x-0 h-[1.5px] bg-wsp-red/70 shadow-[0_0_8px_rgba(227,27,35,0.8)] top-0 animate-[scan_3s_linear_infinite]" />
+                    <div className="absolute bottom-16 left-4 bg-black/85 px-2.5 py-1.5 border border-wsp-red/30 rounded font-mono text-[8px] text-wsp-red tracking-widest flex flex-col gap-0.5">
+                      <span>DATA_FLOW: ENCODE</span>
+                      <span>FACILITY_ID: DC_PHASE_II_CORE</span>
+                      <span>VOLTAGE: 110KV SUBSTATION</span>
+                    </div>
+                  </div>
+
+                  {/* Custom Player Controls Bar */}
+                  <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-black/90 to-black/0 px-4 flex items-center justify-between z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 select-none">
+                    <button
+                      onClick={handlePlayPause}
+                      className="p-2 bg-white/10 hover:bg-wsp-red text-white hover:text-white rounded-lg transition-colors cursor-pointer"
+                    >
+                      {isPlaying ? <Pause size={14} /> : <Play size={14} />}
+                    </button>
+
+                    <div 
+                      onClick={handleProgressBarClick}
+                      className="flex-1 mx-4 h-1.5 bg-white/20 hover:bg-white/30 rounded-full overflow-hidden cursor-pointer relative"
+                    >
+                      <div 
+                        className="h-full bg-wsp-red rounded-full transition-all duration-100"
+                        style={{ width: `${progress}%` }}
+                      />
                     </div>
 
-                    {/* Custom Player Controls Bar */}
-                    <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-black/90 to-black/0 px-4 flex items-center justify-between z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 select-none">
-                      
-                      {/* Play/Pause Button */}
+                    <div className="flex items-center gap-3">
                       <button
-                        onClick={handlePlayPause}
-                        className="p-2 bg-white/10 hover:bg-wsp-red text-white hover:text-white rounded-lg transition-colors cursor-pointer"
+                        onClick={() => setShowDataOverlay(!showDataOverlay)}
+                        className={`p-2 border rounded-lg font-mono text-[8px] tracking-wider transition-colors cursor-pointer ${
+                          showDataOverlay ? "bg-wsp-red border-wsp-red text-white" : "border-white/10 hover:border-wsp-red text-white/70"
+                        }`}
                       >
-                        {isPlaying ? <Pause size={14} /> : <Play size={14} />}
+                        <Cpu size={12} className="inline mr-1 animate-pulse" />
+                        HUD SCANNERS
+                      </button>
+                      
+                      <button
+                        onClick={handleRestart}
+                        className="p-2 hover:bg-white/10 rounded-lg text-white/70 hover:text-white transition-colors cursor-pointer"
+                      >
+                        <RotateCcw size={14} />
                       </button>
 
-                      {/* Timeline Slider Progress bar */}
-                      <div 
-                        onClick={handleProgressBarClick}
-                        className="flex-1 mx-4 h-1.5 bg-white/20 hover:bg-white/30 rounded-full overflow-hidden cursor-pointer relative"
+                      <button
+                        onClick={handleMuteToggle}
+                        className="p-2 hover:bg-white/10 rounded-lg text-white/70 hover:text-white transition-colors cursor-pointer"
                       >
-                        <div 
-                          className="h-full bg-wsp-red rounded-full transition-all duration-100"
-                          style={{ width: `${progress}%` }}
-                        />
-                      </div>
+                        {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                      </button>
+                    </div>
+                  </div>
 
-                      {/* Right controls: Mute, Restart, Data Overlay */}
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => setShowDataOverlay(!showDataOverlay)}
-                          className={`p-2 border rounded-lg font-mono text-[8px] tracking-wider transition-colors cursor-pointer ${
-                            showDataOverlay ? "bg-wsp-red border-wsp-red text-white" : "border-white/10 hover:border-wsp-red text-white/70"
-                          }`}
-                        >
-                          <Cpu size={12} className="inline mr-1" />
-                          DATA OVERLAY
-                        </button>
-                        
-                        <button
-                          onClick={handleRestart}
-                          className="p-2 hover:bg-white/10 rounded-lg text-white/70 hover:text-white transition-colors cursor-pointer"
-                        >
-                          <RotateCcw size={14} />
-                        </button>
-
-                        <button
-                          onClick={handleMuteToggle}
-                          className="p-2 hover:bg-white/10 rounded-lg text-white/70 hover:text-white transition-colors cursor-pointer"
-                        >
-                          {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
-                        </button>
+                  {/* Big Center Play Indicator Overlay */}
+                  {!isPlaying && (
+                    <div 
+                      onClick={handlePlayPause}
+                      className="absolute inset-0 flex items-center justify-center bg-black/35 hover:bg-black/45 transition-colors cursor-pointer z-10"
+                    >
+                      <div className="w-14 h-14 rounded-full bg-black/80 border border-white/20 hover:border-wsp-red text-white flex items-center justify-center shadow-2xl hover:scale-105 transition-all">
+                        <Play size={20} className="translate-x-0.5 text-white" />
                       </div>
                     </div>
+                  )}
+                </div>
+              ) : (
+                // Presentation Slides & Images View (With hover effects)
+                <div className="flex flex-col gap-4">
+                  
+                  {/* Selected Image viewport */}
+                  <div className="w-full aspect-video relative rounded-xl overflow-hidden border border-white/10 bg-black group select-none">
+                    
+                    {/* Corner Tech Brackets */}
+                    <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-white/25 z-10 pointer-events-none" />
+                    <div className="absolute top-4 right-4 w-4 h-4 border-t border-r border-white/25 z-10 pointer-events-none" />
+                    <div className="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-white/25 z-10 pointer-events-none" />
+                    <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-white/25 z-10 pointer-events-none" />
 
-                    {/* Big Center Play Indicator Overlay (When paused) */}
-                    {!isPlaying && (
-                      <div 
-                        onClick={handlePlayPause}
-                        className="absolute inset-0 flex items-center justify-center bg-black/35 hover:bg-black/45 transition-colors cursor-pointer z-10"
-                      >
-                        <div className="w-14 h-14 rounded-full bg-black/80 border border-white/20 hover:border-wsp-red text-white flex items-center justify-center shadow-2xl hover:scale-105 transition-all">
-                          <Play size={20} className="translate-x-0.5 text-white" />
-                        </div>
+                    {/* Renders / Plans */}
+                    <img
+                      src={currentAct.subImages ? currentAct.subImages[activeSubImgIdx].src : currentAct.src}
+                      alt={currentAct.title}
+                      className={`w-full h-full object-cover transition-all duration-700 ${
+                        activeActIdx === 2 && powerOnEffect ? "brightness-125 saturate-120 hue-rotate-15" : ""
+                      }`}
+                    />
+
+                    {/* Interactive "Power On" toggle for Act III (Handover) */}
+                    {activeActIdx === 2 && (
+                      <div className="absolute top-6 right-6 z-20">
+                        <button
+                          onClick={() => setPowerOnEffect(!powerOnEffect)}
+                          className={`px-3 py-1.5 rounded-lg border font-mono text-[9px] tracking-widest flex items-center gap-1.5 transition-all cursor-pointer shadow-lg ${
+                            powerOnEffect 
+                              ? "bg-[#00B050]/20 border-[#00B050] text-[#00B050] shadow-[#00B050]/25" 
+                              : "bg-black/85 border-white/10 text-white/60 hover:text-white"
+                          }`}
+                        >
+                          {powerOnEffect ? <Sun size={10} className="animate-spin" /> : <Moon size={10} />}
+                          {powerOnEffect ? "POWER STATUS: ONLINE" : "SIMULATE POWER ON"}
+                        </button>
                       </div>
                     )}
+
+                    {/* Metadata summary overlay */}
+                    <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col gap-0.5 pointer-events-none">
+                      <span className="font-mono text-[8px] text-wsp-red font-black tracking-widest">
+                        ASSET DETAILS // {currentAct.subImages ? currentAct.subImages[activeSubImgIdx].label.toUpperCase() : "MASTER REFERENCE"}
+                      </span>
+                      <p className="text-[10px] text-white/80 max-w-xl">
+                        {currentAct.subImages ? currentAct.subImages[activeSubImgIdx].desc : currentAct.desc}
+                      </p>
+                    </div>
                   </div>
-                )}
-              </div>
+
+                  {/* Thumbnail Selector Strip */}
+                  {currentAct.subImages && (
+                    <div className="grid grid-cols-3 gap-4">
+                      {currentAct.subImages.map((img, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setActiveSubImgIdx(idx)}
+                          className={`p-2 border rounded-lg text-left transition-all duration-300 cursor-pointer flex flex-col gap-1.5 ${
+                            idx === activeSubImgIdx 
+                              ? "border-wsp-red bg-wsp-red/5" 
+                              : "border-white/5 hover:border-white/10 bg-black/40"
+                          }`}
+                        >
+                          <span className="font-mono text-[8px] tracking-wider text-white/40 block">0{idx + 1} / {img.label}</span>
+                          <div className="w-full aspect-[21/9] rounded overflow-hidden relative">
+                            <img src={img.src} alt={img.label} className="w-full h-full object-cover" />
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                </div>
+              )}
+
             </div>
 
           </div>
@@ -585,48 +668,126 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
                 {[
                   {
                     stage: "Ideation & Scripting",
-                    tools: ["ChatGPT", "Claude"],
                     desc: "Script structure, prompt generation, content summaries.",
-                    icon: <Layers size={14} className="text-wsp-red" />,
+                    logos: [
+                      {
+                        name: "ChatGPT",
+                        color: "#10a37f",
+                        svg: (
+                          <svg className="w-6 h-6 fill-current" viewBox="0 0 16 16">
+                            <path d="M13.6,5.3C13.2,3.3,11.5,1.9,9.5,1.9c-0.8,0-1.6,0.3-2.2,0.8C6.7,2.2,5.9,1.9,5.1,1.9C3.1,1.9,1.4,3.3,1,5.3 C0.6,5.7,0.3,6.3,0.3,7c0,0.7,0.3,1.3,0.8,1.7C0.7,10.7,2.4,12.1,4.4,12.1c0.8,0,1.6-0.3,2.2-0.8c0.6,0.5,1.4,0.8,2.2,0.8 c2,0,3.7-1.4,4.1-3.4c0.5-0.4,0.8-1,0.8-1.7C13.7,6.3,13.4,5.7,13.6,5.3z" />
+                          </svg>
+                        )
+                      },
+                      {
+                        name: "Claude",
+                        color: "#d97706",
+                        svg: (
+                          <svg className="w-6 h-6 stroke-current fill-none stroke-2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18M12 3L7.5 7.5M12 3l4.5 4.5M7.5 12h9M12 21l-4.5-4.5M12 21l4.5-4.5" />
+                          </svg>
+                        )
+                      }
+                    ]
                   },
                   {
                     stage: "Asset Generation (Stills)",
-                    tools: ["Midjourney", "Adobe Firefly", "Flux"],
                     desc: "Creating structural backgrounds and textures from design references.",
-                    icon: <Box size={14} className="text-wsp-red" />,
+                    logos: [
+                      {
+                        name: "Midjourney",
+                        color: "#3b82f6",
+                        svg: (
+                          <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.66 0 3 1.34 3 3v1.71c.7-.29 1.48-.46 2.3-.46.34 0 .67.04 1 .1v3.29c-.6-.4-1.3-.63-2.1-.63H17.9z" />
+                          </svg>
+                        )
+                      },
+                      {
+                        name: "Adobe Firefly",
+                        color: "#eab308",
+                        customBadge: "Fy"
+                      },
+                      {
+                        name: "Flux",
+                        color: "#a855f7",
+                        customBadge: "Fx"
+                      }
+                    ]
                   },
                   {
                     stage: "Video Generation (Motion)",
-                    tools: ["Kling AI", "Higgsfield", "Google Flow"],
                     desc: "Animating site models and construction flows building by building.",
-                    icon: <Play size={14} className="text-wsp-red" />,
+                    logos: [
+                      {
+                        name: "Kling AI",
+                        color: "#ef4444",
+                        customBadge: "Kl"
+                      },
+                      {
+                        name: "Higgsfield",
+                        color: "#ec4899",
+                        customBadge: "Hi"
+                      },
+                      {
+                        name: "Google Flow",
+                        color: "#0f9d58",
+                        svg: (
+                          <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                            <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-6.887 4.114-4.811 0-8.682-3.628-8.682-8.514S7.43 1.486 12.24 1.486c2.43 0 4.31.84 5.67 2.057l3.09-3.086C18.99.782 15.93 0 12.24 0 5.48 0 0 5.4 0 12s5.48 12 12.24 12c6.82 0 11.53-4.629 11.53-11.486 0-.771-.09-1.457-.26-2.229h-11.27z" />
+                          </svg>
+                        )
+                      }
+                    ]
                   },
                   {
                     stage: "Post-Production (Assembly)",
-                    tools: ["After Effects", "Premiere Pro", "Photoshop"],
                     desc: "Color grading, compositing CAD trajectories, timeline metadata overlays.",
-                    icon: <Film size={14} className="text-wsp-red" />,
+                    logos: [
+                      { name: "After Effects", color: "#a488e5", customBadge: "Ae" },
+                      { name: "Premiere Pro", color: "#38a2e5", customBadge: "Pr" },
+                      { name: "Photoshop", color: "#48bafc", customBadge: "Ps" },
+                      { name: "Illustrator", color: "#fc8f18", customBadge: "Ai" }
+                    ]
                   },
                 ].map((item, idx) => (
                   <div key={idx} className="flex gap-4 p-4 border border-white/5 bg-black/40 rounded-lg hover:border-white/10 transition-colors">
-                    <div className="p-2 bg-black border border-white/10 rounded-lg shrink-0 h-10 w-10 flex items-center justify-center">
-                      {item.icon}
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-editorial text-xs font-bold uppercase tracking-wider text-white">{item.stage}</h4>
-                        <span className="text-[10px] text-white/30 font-mono">|</span>
-                        <div className="flex gap-1.5">
-                          {item.tools.map((t) => (
-                            <span key={t} className="text-[8px] font-mono bg-wsp-red/10 border border-wsp-red/20 text-wsp-red px-1.5 py-0.5 rounded">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      <p className="text-[10px] text-text-muted leading-normal">
+                    <div className="flex flex-col gap-1.5 flex-1">
+                      <h4 className="font-editorial text-xs font-bold uppercase tracking-wider text-white">{item.stage}</h4>
+                      <p className="text-[10px] text-text-muted leading-normal mb-2">
                         {item.desc}
                       </p>
+                      
+                      {/* Platform Logo icons */}
+                      <div className="flex flex-wrap gap-3">
+                        {item.logos.map((logo) => (
+                          <div 
+                            key={logo.name}
+                            className="flex items-center gap-2 px-2.5 py-1.5 bg-black border border-white/10 rounded-md select-none hover:border-wsp-red/40 hover:shadow-[0_0_8px_rgba(227,27,35,0.05)] transition-all"
+                            title={logo.name}
+                          >
+                            {logo.svg ? (
+                              <div style={{ color: logo.color }} className="w-5 h-5 flex items-center justify-center">
+                                {logo.svg}
+                              </div>
+                            ) : (
+                              // Custom styled Adobe / CC Monogram Badge
+                              <div 
+                                className="w-5 h-5 rounded font-mono text-[9px] font-black flex items-center justify-center border select-none uppercase"
+                                style={{ 
+                                  backgroundColor: `rgba(${parseInt(logo.color.slice(1,3),16)}, ${parseInt(logo.color.slice(3,5),16)}, ${parseInt(logo.color.slice(5,7),16)}, 0.15)`,
+                                  borderColor: logo.color,
+                                  color: logo.color
+                                }}
+                              >
+                                {logo.customBadge}
+                              </div>
+                            )}
+                            <span className="text-[10px] font-mono text-white/70 font-semibold">{logo.name}</span>
+                          </div>
+                        ))}
+                      </div>
+
                     </div>
                   </div>
                 ))}
@@ -688,7 +849,7 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto w-full">
             
             {/* PDF Report card */}
             <div className="p-6 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-lg flex flex-col justify-between gap-6 hover:border-wsp-red/30 transition-all group">
@@ -714,34 +875,6 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
                 className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4 cursor-pointer"
               >
                 <span>Download PDF</span>
-                <ChevronRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
-              </a>
-            </div>
-
-            {/* PPTX Presentation card */}
-            <div className="p-6 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-lg flex flex-col justify-between gap-6 hover:border-wsp-red/30 transition-all group">
-              <div className="flex justify-between items-start">
-                <div className="p-3 bg-white/5 border border-white/10 group-hover:border-wsp-red/50 text-white/70 group-hover:text-wsp-red rounded transition-all">
-                  <Layers size={20} />
-                </div>
-                <span className="text-[10px] font-editorial text-white/40 tracking-wider uppercase font-bold">
-                  PPTX Slides
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <h4 className="font-editorial text-sm font-bold tracking-wider text-white uppercase group-hover:text-wsp-red transition-colors">
-                  Executive Slides
-                </h4>
-                <p className="text-[10px] text-text-muted">
-                  Original 9-slide visual sequencing strategy presentation
-                </p>
-              </div>
-              <a
-                href="./PPT/WSP_Final_Assessment.pptx"
-                download="WSP_Final_Assessment.pptx"
-                className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4 cursor-pointer"
-              >
-                <span>Download Slides</span>
                 <ChevronRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
               </a>
             </div>
