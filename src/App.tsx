@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import Lenis from "lenis";
-import { Download, ArrowDown, ChevronRight, FileText, Film, Layers, Eye, RefreshCw, Activity, Lightbulb, Workflow, Award, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
+import { Download, ArrowDown, ChevronRight, FileText, Film, Layers, Lightbulb, Workflow, Award, Sparkles, ChevronDown, ChevronUp, Briefcase, Cpu, ArrowLeft } from "lucide-react";
 import { BackgroundParticles } from "./components/BackgroundParticles";
 import { SectionHeader } from "./components/SectionHeader";
 import { CustomVideoPlayer } from "./components/CustomVideoPlayer";
@@ -8,8 +8,10 @@ import { StoryboardSection } from "./components/StoryboardSection";
 import { ImageGallery } from "./components/ImageGallery";
 import { WorkflowTimeline } from "./components/WorkflowTimeline";
 import { CreativeLabDashboard } from "./components/CreativeLabDashboard";
+import { DataCentreCaseStudy } from "./components/DataCentreCaseStudy";
 
 export default function App() {
+  const [currentPage, setCurrentPage] = useState<'hub' | 'film' | 'datacentre'>('hub');
   const [scrollY, setScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState("");
   const [expandedConceptCard, setExpandedConceptCard] = useState<number | null>(0);
@@ -37,21 +39,21 @@ export default function App() {
     const handleScroll = () => {
       setScrollY(window.scrollY);
 
-      // Simple active section highlights
-      let currentSection = "";
-      const scrollPosition = window.scrollY + window.innerHeight * 0.4;
+      if (currentPage === 'film') {
+        let currentSection = "";
+        const scrollPosition = window.scrollY + window.innerHeight * 0.4;
 
-      Object.entries(sectionsRef.current).forEach(([key, section]) => {
-        if (section) {
-          const top = section.offsetTop;
-          const height = section.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            currentSection = key;
+        Object.entries(sectionsRef.current).forEach(([key, section]) => {
+          if (section) {
+            const top = section.offsetTop;
+            const height = section.offsetHeight;
+            if (scrollPosition >= top && scrollPosition < top + height) {
+              currentSection = key;
+            }
           }
-        }
-      });
-
-      setActiveSection(currentSection);
+        });
+        setActiveSection(currentSection);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -59,7 +61,7 @@ export default function App() {
       lenis.destroy();
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [currentPage]);
 
   const navItems = [
     { id: "concept", label: "Creative Concept" },
@@ -77,13 +79,178 @@ export default function App() {
     }
   };
 
+  const handlePageChange = (page: 'hub' | 'film' | 'datacentre') => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  // Render Hub Page
+  if (currentPage === 'hub') {
+    return (
+      <div className="relative min-h-screen text-white bg-black select-none tech-grid overflow-hidden flex flex-col justify-between">
+        
+        {/* Background Canvas Particles */}
+        <BackgroundParticles />
+
+        {/* Ambient Gradient Glows */}
+        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-wsp-red/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[500px] h-[500px] bg-red-900/5 rounded-full blur-3xl pointer-events-none" />
+
+        {/* Technical corners */}
+        <div className="absolute top-8 left-8 w-6 h-6 border-t border-l border-white/10 pointer-events-none" />
+        <div className="absolute top-8 right-8 w-6 h-6 border-t border-r border-white/10 pointer-events-none" />
+        <div className="absolute bottom-8 left-8 w-6 h-6 border-b border-l border-white/10 pointer-events-none" />
+        <div className="absolute bottom-8 right-8 w-6 h-6 border-b border-r border-white/10 pointer-events-none" />
+
+        {/* Top Header Label */}
+        <header className="max-w-7xl mx-auto px-6 w-full h-24 flex items-center justify-between z-10 relative">
+          <div className="flex items-center gap-3">
+            <img src="./assets/images/creative_concept_image1.png" alt="WSP Logo" className="h-4 object-contain" />
+            <span className="font-editorial text-[10px] tracking-[0.25em] text-white/50 uppercase font-black">
+              Digital Case Studies
+            </span>
+          </div>
+          <span className="font-mono text-[9px] text-white/30 tracking-widest uppercase font-semibold">
+            HUSSEIN MASRI // CANDIDATE PORTFOLIO
+          </span>
+        </header>
+
+        {/* Main Selection Body */}
+        <main className="max-w-6xl mx-auto px-6 py-12 flex flex-col justify-center items-center gap-12 z-10 relative w-full flex-grow">
+          
+          {/* Title & Introduction */}
+          <div className="text-center flex flex-col gap-4 max-w-3xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-wsp-red/10 border border-wsp-red/20 text-wsp-red rounded-full text-[9px] font-mono tracking-widest uppercase mx-auto">
+              <Briefcase size={10} />
+              WSP Recruitment Portal
+            </div>
+
+            <h1 className="font-editorial text-5xl md:text-7xl font-black tracking-tight text-white uppercase leading-none select-none">
+              Engineering <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-wsp-red">Tomorrow</span>
+            </h1>
+
+            <div className="h-px w-24 bg-wsp-red mx-auto my-1" />
+
+            <p className="text-xs md:text-sm text-white/60 leading-relaxed font-mono max-w-xl mx-auto tracking-wide uppercase">
+              A digital compilation of AI-enabled visual communication strategy assignments.
+            </p>
+          </div>
+
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+            
+            {/* Card 1: WSP Brand Film */}
+            <div
+              onClick={() => handlePageChange('film')}
+              className="p-8 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-xl hover:border-wsp-red/40 hover:shadow-[0_0_30px_rgba(227,27,35,0.05)] transition-all duration-500 cursor-pointer flex flex-col justify-between gap-8 group relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-wsp-red/5 rounded-full blur-2xl pointer-events-none group-hover:bg-wsp-red/10 transition-colors" />
+              
+              <div className="flex flex-col gap-6">
+                <div className="flex justify-between items-start">
+                  <div className="p-3 bg-black border border-white/10 text-wsp-red rounded-lg group-hover:border-wsp-red/45 transition-colors">
+                    <Film size={24} />
+                  </div>
+                  <span className="font-mono text-[9px] text-white/30 uppercase tracking-widest">ASSIGNMENT 01</span>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <span className="font-mono text-[9px] text-wsp-red uppercase tracking-widest font-black">
+                    Brand Film Concept
+                  </span>
+                  <h3 className="font-editorial text-2xl font-bold uppercase text-white tracking-wider group-hover:text-wsp-red transition-colors">
+                    Engineering Tomorrow
+                  </h3>
+                  <p className="text-xs text-text-muted leading-relaxed mt-2">
+                    A cinematic, scroll-driven interactive case study tracking the creative concept, storyboard frames, and workflow implementation rules for the WSP promotional film.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between border-t border-white/5 pt-4 font-mono text-[9px] uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">
+                <span>Explore Case Study</span>
+                <ChevronRight size={14} className="transform group-hover:translate-x-1.5 transition-transform" />
+              </div>
+            </div>
+
+            {/* Card 2: Data Centre Sequencing */}
+            <div
+              onClick={() => handlePageChange('datacentre')}
+              className="p-8 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-xl hover:border-wsp-red/40 hover:shadow-[0_0_30px_rgba(227,27,35,0.05)] transition-all duration-500 cursor-pointer flex flex-col justify-between gap-8 group relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-wsp-red/5 rounded-full blur-2xl pointer-events-none group-hover:bg-wsp-red/10 transition-colors" />
+              
+              <div className="flex flex-col gap-6">
+                <div className="flex justify-between items-start">
+                  <div className="p-3 bg-black border border-white/10 text-wsp-red rounded-lg group-hover:border-wsp-red/45 transition-colors">
+                    <Cpu size={24} />
+                  </div>
+                  <span className="font-mono text-[9px] text-white/30 uppercase tracking-widest">FINAL ASSESSMENT</span>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <span className="font-mono text-[9px] text-wsp-red uppercase tracking-widest font-black">
+                    Visual sequencing Strategy
+                  </span>
+                  <h3 className="font-editorial text-2xl font-bold uppercase text-white tracking-wider group-hover:text-wsp-red transition-colors">
+                    From Programme to Narrative
+                  </h3>
+                  <p className="text-xs text-text-muted leading-relaxed mt-2">
+                    An executive proposal translating 78-month structural programme data, site model transitions, and AI-enabled assembly methodologies into a cohesive 60s visual story.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between border-t border-white/5 pt-4 font-mono text-[9px] uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">
+                <span>Explore Proposal</span>
+                <ChevronRight size={14} className="transform group-hover:translate-x-1.5 transition-transform" />
+              </div>
+            </div>
+
+          </div>
+
+        </main>
+
+        {/* Hub Footer */}
+        <footer className="w-full py-12 border-t border-white/5 bg-black/60 backdrop-blur-md z-10 text-center select-none">
+          <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <span className="text-[10px] text-white/30 font-medium">
+              Prepared for Amitav Sahoo & WSP Selection Committee.
+            </span>
+            <span className="font-editorial text-[10px] tracking-widest text-white/50 uppercase font-black">
+              © {new Date().getFullYear()} Hussein Masri
+            </span>
+          </div>
+        </footer>
+
+      </div>
+    );
+  }
+
+  // Render Data Centre Case Study Page
+  if (currentPage === 'datacentre') {
+    return <DataCentreCaseStudy onBack={() => handlePageChange('hub')} />;
+  }
+
+  // Render Original Assignment 1 (Brand Film) Page
   return (
     <div className="relative min-h-screen text-white bg-black select-none tech-grid overflow-hidden">
       
-      {/* 1. Global Interactive Ambient Particles */}
+      {/* Global Interactive Ambient Particles */}
       <BackgroundParticles />
 
-      {/* 2. Glassmorphic Adaptive Navigation Header */}
+      {/* Floating Back Button (Hub navigation) */}
+      <div className="fixed top-6 left-6 z-50">
+        <button
+          onClick={() => handlePageChange('hub')}
+          className="flex items-center gap-2 px-4 py-2 bg-black/60 border border-white/10 hover:border-wsp-red text-white/80 hover:text-white rounded-lg backdrop-blur-md transition-all shadow-lg hover:shadow-wsp-red/10 cursor-pointer text-xs uppercase tracking-widest font-mono"
+        >
+          <ArrowLeft size={12} />
+          Back to Hub
+        </button>
+      </div>
+
+      {/* Glassmorphic Adaptive Navigation Header */}
       <header
         className={`fixed top-0 inset-x-0 z-40 border-b border-white/5 bg-black/60 backdrop-blur-md transition-all duration-500 ${
           scrollY > 200 ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
@@ -132,7 +299,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* 3. Opening Experience / Hero Section */}
+      {/* Opening Experience / Hero Section */}
       <section className="relative h-screen w-full flex flex-col justify-center items-center px-6 text-center select-none z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/40 to-black pointer-events-none z-0" />
         
@@ -182,7 +349,6 @@ export default function App() {
           ref={(el) => { sectionsRef.current["concept"] = el; }}
           className="w-full py-24 bg-[#080809] border-b border-white/5 scroll-mt-20 relative overflow-hidden"
         >
-          {/* Technical Red Grid Background */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(227,27,35,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(227,27,35,0.012)_1px,transparent_1px)] bg-[size:45px_45px] pointer-events-none" />
           
           <div className="max-w-7xl mx-auto px-6">
@@ -194,7 +360,6 @@ export default function App() {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
               
-              {/* Visual Arc Panel (Left) */}
               <div className="lg:col-span-5 flex flex-col gap-6 p-8 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-lg relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-wsp-red/5 rounded-full blur-2xl pointer-events-none" />
                 
@@ -202,7 +367,6 @@ export default function App() {
                   The Narrative Journey
                 </h3>
                 
-                {/* Graphic Representation of Arc */}
                 <div className="flex flex-col gap-8 relative pl-6 before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-[1px] before:bg-white/5">
                   {[
                     { title: "Understanding", active: true },
@@ -222,9 +386,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Content Details (Right) - Interactive Cards */}
               <div className="lg:col-span-7 flex flex-col gap-4">
-                
                 {[
                   {
                     num: "01",
@@ -303,7 +465,6 @@ export default function App() {
                   );
                 })}
 
-                {/* Download button for Creative Concept */}
                 <div className="mt-4">
                   <a
                     href="./PDF/WSP Creative Concept.pdf"
@@ -322,14 +483,13 @@ export default function App() {
         </section>
 
         {/* ==================================================== */}
-        {/* SECTION 02 — 60-SECOND PROMOTIONAL FILM */}
+        {/* SECTION 02 — BRAND FILM */}
         {/* ==================================================== */}
         <section
           id="film"
           ref={(el) => { sectionsRef.current["film"] = el; }}
           className="w-full py-24 bg-[#030304] border-b border-white/5 scroll-mt-20 relative overflow-hidden"
         >
-          {/* Cinematic Red Ambient Ambilight Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-wsp-red/5 rounded-full blur-3xl pointer-events-none" />
           
           <div className="max-w-7xl mx-auto px-6">
@@ -366,14 +526,13 @@ export default function App() {
         </section>
 
         {/* ==================================================== */}
-        {/* SECTION 03 — STORYBOARD / SCENE BREAKDOWN */}
+        {/* SECTION 03 — STORYBOARD */}
         {/* ==================================================== */}
         <section
           id="storyboard"
           ref={(el) => { sectionsRef.current["storyboard"] = el; }}
           className="w-full py-24 bg-[#060607] border-b border-white/5 scroll-mt-20 relative overflow-hidden"
         >
-          {/* Subtle Technical CAD Grid Overlay */}
           <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
           
           <div className="max-w-7xl mx-auto px-6">
@@ -401,14 +560,13 @@ export default function App() {
         </section>
 
         {/* ==================================================== */}
-        {/* SECTION 04 — AI-GENERATED SUPPORTING IMAGES */}
+        {/* SECTION 04 — GALLERY */}
         {/* ==================================================== */}
         <section
           id="images"
           ref={(el) => { sectionsRef.current["images"] = el; }}
           className="w-full py-24 bg-[#09090b] border-b border-white/5 scroll-mt-20 relative overflow-hidden"
         >
-          {/* Gallery Diagonal Striped Texture */}
           <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.003)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.003)_50%,rgba(255,255,255,0.003)_75%,transparent_75%,transparent)] bg-[size:16px_16px] pointer-events-none" />
           
           <div className="max-w-7xl mx-auto px-6">
@@ -436,14 +594,13 @@ export default function App() {
         </section>
 
         {/* ==================================================== */}
-        {/* SECTION 05 — AI WORKFLOW DOCUMENTATION */}
+        {/* SECTION 05 — WORKFLOW */}
         {/* ==================================================== */}
         <section
           id="workflow"
           ref={(el) => { sectionsRef.current["workflow"] = el; }}
           className="w-full py-24 bg-[#050505] border-b border-white/5 scroll-mt-20 relative overflow-hidden"
         >
-          {/* Connected Red Pipeline Dots */}
           <div className="absolute inset-0 bg-[radial-gradient(rgba(227,27,35,0.015)_1.5px,transparent_1.5px)] bg-[size:32px_32px] pointer-events-none" />
           
           <div className="max-w-7xl mx-auto px-6">
@@ -471,14 +628,13 @@ export default function App() {
         </section>
 
         {/* ==================================================== */}
-        {/* SECTION 06 — AI CREATIVE LAB */}
+        {/* SECTION 06 — LAB */}
         {/* ==================================================== */}
         <section
           id="lab"
           ref={(el) => { sectionsRef.current["lab"] = el; }}
           className="w-full py-24 bg-gradient-to-tr from-[#050506] via-[#0d0506] to-[#050506] border-b border-white/5 scroll-mt-20 relative overflow-hidden"
         >
-          {/* Top glowing line */}
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-wsp-red/20 to-transparent pointer-events-none" />
           
           <div className="max-w-7xl mx-auto px-6">
@@ -525,7 +681,6 @@ export default function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               
-              {/* Film download card */}
               <div className="p-6 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-lg flex flex-col justify-between gap-6 hover:border-wsp-red/30 transition-all group">
                 <div className="flex justify-between items-start">
                   <div className="p-3 bg-wsp-red/5 border border-wsp-red/20 group-hover:border-wsp-red/50 text-wsp-red rounded transition-all">
@@ -553,7 +708,6 @@ export default function App() {
                 </a>
               </div>
 
-              {/* Creative Concept download card */}
               <div className="p-6 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-lg flex flex-col justify-between gap-6 hover:border-wsp-red/30 transition-all group">
                 <div className="flex justify-between items-start">
                   <div className="p-3 bg-white/5 border border-white/10 group-hover:border-wsp-red/50 text-white/70 group-hover:text-wsp-red rounded transition-all">
@@ -581,7 +735,6 @@ export default function App() {
                 </a>
               </div>
 
-              {/* Storyboard download card */}
               <div className="p-6 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-lg flex flex-col justify-between gap-6 hover:border-wsp-red/30 transition-all group">
                 <div className="flex justify-between items-start">
                   <div className="p-3 bg-white/5 border border-white/10 group-hover:border-wsp-red/50 text-white/70 group-hover:text-wsp-red rounded transition-all">
@@ -609,97 +762,13 @@ export default function App() {
                 </a>
               </div>
 
-              {/* AI Generated Images download card */}
-              <div className="p-6 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-lg flex flex-col justify-between gap-6 hover:border-wsp-red/30 transition-all group">
-                <div className="flex justify-between items-start">
-                  <div className="p-3 bg-white/5 border border-white/10 group-hover:border-wsp-red/50 text-white/70 group-hover:text-wsp-red rounded transition-all">
-                    <Eye size={20} />
-                  </div>
-                  <span className="text-[10px] font-editorial text-white/40 tracking-wider uppercase font-bold">
-                    PDF catalog
-                  </span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <h4 className="font-editorial text-sm font-bold tracking-wider text-white uppercase group-hover:text-wsp-red transition-colors">
-                    AI-Generated Images
-                  </h4>
-                  <p className="text-[10px] text-text-muted">
-                    High-res image catalog and prompts used in direction exploration
-                  </p>
-                </div>
-                <a
-                  href="./PDF/WSP AI Generated Images.pdf"
-                  download="WSP AI Generated Images.pdf"
-                  className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4"
-                >
-                  <span>Download PDF</span>
-                  <ChevronRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
-
-              {/* AI Workflow download card */}
-              <div className="p-6 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-lg flex flex-col justify-between gap-6 hover:border-wsp-red/30 transition-all group">
-                <div className="flex justify-between items-start">
-                  <div className="p-3 bg-white/5 border border-white/10 group-hover:border-wsp-red/50 text-white/70 group-hover:text-wsp-red rounded transition-all">
-                    <RefreshCw size={20} />
-                  </div>
-                  <span className="text-[10px] font-editorial text-white/40 tracking-wider uppercase font-bold">
-                    PDF Workflow
-                  </span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <h4 className="font-editorial text-sm font-bold tracking-wider text-white uppercase group-hover:text-wsp-red transition-colors">
-                    AI Workflow Docs
-                  </h4>
-                  <p className="text-[10px] text-text-muted">
-                    Ecosystem of 15 tools mapped to 5 stages of production
-                  </p>
-                </div>
-                <a
-                  href="./PDF/WSP AI Workflow Documentation.pdf"
-                  download="WSP AI Workflow Documentation.pdf"
-                  className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4"
-                >
-                  <span>Download PDF</span>
-                  <ChevronRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
-
-              {/* AI Creative Lab download card */}
-              <div className="p-6 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-lg flex flex-col justify-between gap-6 hover:border-wsp-red/30 transition-all group">
-                <div className="flex justify-between items-start">
-                  <div className="p-3 bg-white/5 border border-white/10 group-hover:border-wsp-red/50 text-white/70 group-hover:text-wsp-red rounded transition-all">
-                    <Activity size={20} />
-                  </div>
-                  <span className="text-[10px] font-editorial text-white/40 tracking-wider uppercase font-bold">
-                    PDF Blueprint
-                  </span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <h4 className="font-editorial text-sm font-bold tracking-wider text-white uppercase group-hover:text-wsp-red transition-colors">
-                    AI Creative Lab
-                  </h4>
-                  <p className="text-[10px] text-text-muted">
-                    Strategic governance and business rollout roadmap
-                  </p>
-                </div>
-                <a
-                  href="./PDF/WSP AI Creative Lab.pdf"
-                  download="WSP AI Creative Lab.pdf"
-                  className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4"
-                >
-                  <span>Download PDF</span>
-                  <ChevronRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
-
             </div>
           </div>
         </section>
 
       </main>
 
-      {/* 4. Minimal Cinematic Footer */}
+      {/* Footer */}
       <footer className="border-t border-white/5 bg-[#050506] py-16 px-6 relative z-10 select-none">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           <div className="flex flex-col gap-2">
