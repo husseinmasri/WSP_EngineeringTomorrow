@@ -106,6 +106,7 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
   const [showDataOverlay, setShowDataOverlay] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
+  const isMutedRef = useRef(isMuted);
   const currentAct = actsData[activeActIdx];
 
   // Auto-playing Timeline steps (cycles every 5 seconds)
@@ -117,13 +118,18 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
     return () => clearInterval(interval);
   }, [isAutoPlayingTimeline]);
 
+  // Keep the latest mute preference available without re-triggering the reset effect below
+  useEffect(() => {
+    isMutedRef.current = isMuted;
+  }, [isMuted]);
+
   // Video State Reset on video change
   useEffect(() => {
     setIsPlaying(false);
     setProgress(0);
     if (videoRef.current) {
       videoRef.current.load();
-      if (!isMuted) {
+      if (!isMutedRef.current) {
         videoRef.current.muted = false;
       }
     }
@@ -437,7 +443,7 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
               <div className="w-full aspect-video relative rounded-xl overflow-hidden border border-white/10 bg-black group shadow-2xl">
                 <video
                   ref={videoRef}
-                  src="./Full Sequence.mp4"
+                  src="./Poof of Concept Video.mp4"
                   className="w-full h-full object-cover"
                   muted={isMuted}
                   playsInline
@@ -961,8 +967,8 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
                 </p>
               </div>
               <a
-                href="./Full Sequence.mp4"
-                download="Full Sequence.mp4"
+                href="./Poof of Concept Video.mp4"
+                download="WSP Proof of Concept Video.mp4"
                 className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4 cursor-pointer"
               >
                 <span>Download MP4</span>
