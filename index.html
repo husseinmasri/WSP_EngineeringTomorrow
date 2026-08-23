@@ -11,6 +11,19 @@
     <meta property="og:title" content="Engineering Tomorrow | WSP AI-First Multimedia Designer Portfolio" />
     <meta property="og:description" content="Two interactive case studies for WSP: an AI-assisted brand film concept and a data centre visual sequencing strategy, by Hussein Masri." />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QVKFVJG8KE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      // send_page_view is disabled here because this is a single-page app with
+      // no real URL changes; App.tsx fires an explicit page_view event instead
+      // whenever the visitor switches between Hub / Brand Film / Data Centre.
+      gtag('config', 'G-QVKFVJG8KE', { send_page_view: false });
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
