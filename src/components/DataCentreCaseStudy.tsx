@@ -404,8 +404,9 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
                 
                 <div className="flex flex-col gap-3">
                   {[
-                    { id: 0, title: "Structure to System", phase: "Act II (Phase 2-3)", desc: "Internal equipment tray, cooling, and mechanical systems tracing." },
-                    { id: 1, title: "System to Service", phase: "Act III (Commissioning)", desc: "Final photorealistic operational data hall testing sequences." }
+{ id: 0, title: "Structure to System", phase: "Act II (Phase 2-3)", desc: "Internal equipment tray, cooling, and mechanical systems tracing." },
+{ id: 1, title: "System to Service", phase: "Act III (Commissioning)", desc: "Final photorealistic operational data hall testing sequences." },
+{ id: 2, title: "Full Sequence", phase: "Acts I-III", desc: "Complete 60-second proof-of-concept: Site to Structure to System to Service." }
                   ].map((vid) => (
                     <button
                       key={vid.id}
@@ -438,8 +439,7 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
               <div className="w-full aspect-video relative rounded-xl overflow-hidden border border-white/10 bg-black group shadow-2xl">
                 <video
                   ref={videoRef}
-                  src={activeVideoIdx === 0 ? "./Structure to System.mp4" : "./System to Service.mp4"}
-                  className="w-full h-full object-cover"
+src={activeVideoIdx === 0 ? "./Structure to System.mp4" : activeVideoIdx === 1 ? "./System to Service.mp4" : "./Full Sequence.mp4"}                  className="w-full h-full object-cover"
                   muted={isMuted}
                   playsInline
                   onTimeUpdate={handleTimeUpdate}
@@ -943,24 +943,33 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
               </a>
             </div>
 
-            {/* Twin Video 1 */}
-            <div className="p-6 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-lg flex flex-col justify-between gap-6 hover:border-wsp-red/30 transition-all group">
-              <div className="flex justify-between items-start">
-                <div className="p-3 bg-white/5 border border-white/10 group-hover:border-wsp-red/50 text-white/70 group-hover:text-wsp-red rounded transition-all">
-                  <Play size={20} />
-                </div>
-                <span className="text-[10px] font-editorial text-white/40 tracking-wider uppercase font-bold">
-                  MP4 Footage
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <h4 className="font-editorial text-sm font-bold tracking-wider text-white uppercase group-hover:text-wsp-red transition-colors">
-                  Structure to System
-                </h4>
-                <p className="text-[10px] text-text-muted">
-                  Phase 2 sequence: internal data hall systems and trays installation
-                </p>
-              </div>
+{/* Full Sequence Video card */}
+<div className="p-6 border border-white/5 bg-[#080809]/40 backdrop-blur-md rounded-lg flex flex-col justify-between gap-6 hover:border-wsp-red/30 transition-all group">
+  <div className="flex justify-between items-start">
+    <div className="p-3 bg-white/5 border border-white/10 group-hover:border-wsp-red/50 text-white/70 group-hover:text-wsp-red rounded transition-all">
+      <Play size={20} />
+    </div>
+    <span className="text-[10px] font-editorial text-white/40 tracking-wider uppercase font-bold">
+      MP4 Footage
+    </span>
+  </div>
+  <div className="flex flex-col gap-1">
+    <h4 className="font-editorial text-sm font-bold tracking-wider text-white uppercase group-hover:text-wsp-red transition-colors">
+      Full Sequence
+    </h4>
+    <p className="text-[10px] text-text-muted">
+      Complete 60-second proof-of-concept: full narrative sequence
+    </p>
+  </div>
+  
+    href="./Full Sequence.mp4"
+    download="Full Sequence.mp4"
+    className="flex items-center justify-between text-xs font-editorial text-white/80 group-hover:text-wsp-red transition-colors border-t border-white/5 pt-4"
+  >
+    <span>Download MP4</span>
+    <ChevronRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
+  </a>
+</div>
               <a
                 href="./Structure to System.mp4"
                 download="Structure to System.mp4"
