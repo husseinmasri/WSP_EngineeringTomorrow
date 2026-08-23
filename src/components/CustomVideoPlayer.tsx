@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { Play, Pause, Volume2, VolumeX, Maximize } from "lucide-react";
 
 export const CustomVideoPlayer: React.FC = () => {
@@ -35,7 +35,7 @@ export const CustomVideoPlayer: React.FC = () => {
   }, []);
 
   // Update controls fade-out timer
-  const resetControlsTimeout = () => {
+  const resetControlsTimeout = useCallback(() => {
     setShowControls(true);
     if (controlsTimeoutRef.current) {
       window.clearTimeout(controlsTimeoutRef.current);
@@ -45,7 +45,7 @@ export const CustomVideoPlayer: React.FC = () => {
         setShowControls(false);
       }
     }, 2500);
-  };
+  }, [isPlaying]);
 
   useEffect(() => {
     resetControlsTimeout();
@@ -54,7 +54,7 @@ export const CustomVideoPlayer: React.FC = () => {
         window.clearTimeout(controlsTimeoutRef.current);
       }
     };
-  }, [isPlaying]);
+  }, [resetControlsTimeout]);
 
   const handlePlayPause = () => {
     const video = videoRef.current;
