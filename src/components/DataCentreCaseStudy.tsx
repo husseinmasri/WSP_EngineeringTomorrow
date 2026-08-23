@@ -444,6 +444,7 @@ export const DataCentreCaseStudy: React.FC<{ onBack: () => void }> = ({ onBack }
                 <video
                   ref={videoRef}
                   src="./Poof of Concept Video.mp4"
+                  poster="./assets/images/proof_of_concept_poster.png"
                   className="w-full h-full object-cover"
                   muted={isMuted}
                   playsInline
