@@ -10,12 +10,33 @@ import { WorkflowTimeline } from "./components/WorkflowTimeline";
 import { CreativeLabDashboard } from "./components/CreativeLabDashboard";
 import { DataCentreCaseStudy } from "./components/DataCentreCaseStudy";
 
+const PAGE_META: Record<'hub' | 'film' | 'datacentre', { path: string; title: string }> = {
+  hub: { path: "/hub", title: "Portfolio Hub" },
+  film: { path: "/film", title: "Engineering Tomorrow — Brand Film" },
+  datacentre: { path: "/datacentre", title: "From Programme to Narrative — Data Centre" },
+};
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState<'hub' | 'film' | 'datacentre'>('hub');
   const [scrollY, setScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState("");
   const [expandedConceptCard, setExpandedConceptCard] = useState<number | null>(0);
   const sectionsRef = useRef<{ [key: string]: HTMLElement | null }>({});
+
+  // Report a virtual pageview to Google Analytics for each internal "page".
+  // This is a single-page app with no real URL changes, so GA's automatic
+  // pageview tracking (disabled in index.html) would otherwise only ever see
+  // one pageview per visit no matter how many sections a visitor explores.
+  useEffect(() => {
+    const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+    if (!gtag) return;
+    const meta = PAGE_META[currentPage];
+    gtag("event", "page_view", {
+      page_title: meta.title,
+      page_path: meta.path,
+      page_location: window.location.origin + window.location.pathname + "#" + meta.path,
+    });
+  }, [currentPage]);
 
   // Initialize Lenis Smooth Scrolling
   useEffect(() => {
